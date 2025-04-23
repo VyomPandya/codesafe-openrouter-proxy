@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const { json } = require('micro');
 
 module.exports = async (req, res) => {
   // CORS headers for all responses
@@ -22,11 +23,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    let body = req.body;
-    if (typeof body === 'string') {
-      body = JSON.parse(body);
-    }
-
+    const body = await json(req); // <-- This parses the JSON body
     const { code, ...options } = body;
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
