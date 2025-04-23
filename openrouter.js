@@ -1,8 +1,7 @@
-// Vercel Serverless Function: /api/openrouter.js
 const fetch = require('node-fetch');
 
 module.exports = async (req, res) => {
-  // Always set CORS headers
+  // CORS headers (set for every response)
   res.setHeader('Access-Control-Allow-Origin', 'https://vyompandya.github.io');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -14,20 +13,22 @@ module.exports = async (req, res) => {
   }
 
   if (req.method !== 'POST') {
-    // CORS headers must be set even for errors
-    res.setHeader('Access-Control-Allow-Origin', 'https://vyompandya.github.io');
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
   if (!OPENROUTER_API_KEY) {
-    // CORS headers must be set even for errors
-    res.setHeader('Access-Control-Allow-Origin', 'https://vyompandya.github.io');
     return res.status(500).json({ error: 'OpenRouter API key not configured on server.' });
   }
 
   try {
-    const { code, ...options } = req.body;
+    // Parse JSON body if not already parsed
+    let body = req.body;
+    if (typeof body === 'string') {
+      body = JSON.parse(body);
+    }
+
+    const { code, ...options } = body;
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -45,12 +46,8 @@ module.exports = async (req, res) => {
       })
     });
     const data = await response.json();
-    // CORS headers must be set even for errors
-    res.setHeader('Access-Control-Allow-Origin', 'https://vyompandya.github.io');
     res.status(response.status).json(data);
   } catch (err) {
-    // CORS headers must be set even for errors
-    res.setHeader('Access-Control-Allow-Origin', 'https://vyompandya.github.io');
     res.status(500).json({ error: err.message });
   }
 };
