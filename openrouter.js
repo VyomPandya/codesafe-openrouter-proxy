@@ -1,14 +1,14 @@
 const fetch = require('node-fetch');
 
 module.exports = async (req, res) => {
-  // CORS headers (set for every response)
+  // CORS headers for all responses
   res.setHeader('Access-Control-Allow-Origin', 'https://vyompandya.github.io');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   // Handle preflight OPTIONS request
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
+    res.status(200).end(); // No body!
     return;
   }
 
@@ -22,7 +22,6 @@ module.exports = async (req, res) => {
   }
 
   try {
-    // Parse JSON body if not already parsed
     let body = req.body;
     if (typeof body === 'string') {
       body = JSON.parse(body);
