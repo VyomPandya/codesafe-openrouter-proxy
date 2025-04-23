@@ -1,0 +1,8 @@
+{
+  "name": "codesafe-proxy-vercel",
+  "version": "1.0.0",
+  "main": "openrouter.js",
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  }
+}
