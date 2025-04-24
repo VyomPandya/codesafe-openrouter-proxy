@@ -3,12 +3,14 @@ const { json } = require('micro');
 
 module.exports = async (req, res) => {
   // CORS headers for all responses
+  const origin = req.headers.origin;
   const allowedOrigins = [
     'https://vyompandya.github.io',
     'https://code-safe-vercel.vercel.app'
   ];
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
+  // Allow any *.vercel.app domain
+  const isVercelApp = origin && origin.endsWith('.vercel.app');
+  if (allowedOrigins.includes(origin) || isVercelApp) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
