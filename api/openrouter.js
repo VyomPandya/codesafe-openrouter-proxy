@@ -16,17 +16,19 @@ module.exports = async (req, res) => {
 
   // Handle preflight OPTIONS request
   if (req.method === 'OPTIONS') {
-    res.status(200).end(); // No body!
+    res.status(200).end();
     return;
   }
 
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    res.status(405).json({ error: 'Method not allowed' });
+    return;
   }
 
   const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
   if (!OPENROUTER_API_KEY) {
-    return res.status(500).json({ error: 'OpenRouter API key not configured on server.' });
+    res.status(500).json({ error: 'OpenRouter API key not configured on server.' });
+    return;
   }
 
   try {
