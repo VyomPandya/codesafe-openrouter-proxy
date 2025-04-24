@@ -3,7 +3,14 @@ const { json } = require('micro');
 
 module.exports = async (req, res) => {
   // CORS headers for all responses
-  res.setHeader('Access-Control-Allow-Origin', 'https://vyompandya.github.io');
+  const allowedOrigins = [
+    'https://vyompandya.github.io',
+    'https://code-safe-vercel.vercel.app'
+  ];
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -23,7 +30,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const body = await json(req); // <-- This parses the JSON body
+    const body = await json(req);
     const { code, ...options } = body;
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
