@@ -2,14 +2,8 @@
   "name": "codesafe-proxy-vercel",
   "version": "1.0.0",
   "main": "api/openrouter.js",
-  "scripts": {
-    "build": "vite build"
-  },
   "dependencies": {
     "node-fetch": "^2.6.7",
     "micro": "^9.3.4"
-  },
-  "devDependencies": {
-    "vite": "^4.0.0"
   }
 }
